@@ -25,16 +25,15 @@ statuses = parsed['statuses']
 dt_utcnow = datetime.datetime.now(tz=pytz.UTC)
 dt_east = dt_utcnow.astimezone(pytz.timezone('US/Eastern'))
 dt_east_str = dt_east.strftime('%m/%d/%Y %I:%M %p')
-print dt_east_str
-
-for status in statuses:
-    screen_name = status['user']['screen_name']
-    ct_str = status['created_at']
-    parsed_date = parser.parse(ct_str)
-    created_time = parsed_date.strftime('%m/%d/%Y %I:%M %p')
-    text = status['text'].encode('utf-8')
-    print '\n@{0}\n{1}\n{2}\n'.format(screen_name, created_time, text)
 
 with open('search.txt', 'w') as f:
-    f.write(search_term + '\n')
-    f.write(dt_east_str)
+    f.write('\nSearch Term: {}\n\n'.format(search_term))
+    f.write('{}\n'.format(dt_east_str))
+
+    for status in statuses:
+        screen_name = status['user']['screen_name']
+        ct_str = status['created_at']
+        parsed_date = parser.parse(ct_str)
+        created_time = parsed_date.strftime('%m/%d/%Y %I:%M %p')
+        text = status['text'].encode('utf-8')
+        f.write('\n@{0}\n{1}\n{2}\n'.format(screen_name, created_time, text))
